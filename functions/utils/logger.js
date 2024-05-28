@@ -1,4 +1,15 @@
+const fs = require("fs");
+const path = require("path");
 const winston = require("winston");
+
+// Define the log file path dynamically based on the location of logger.js
+const logDir = path.join(__dirname);
+const logFilePath = path.join(logDir, "app.log");
+
+// Ensure the log file exists
+if (!fs.existsSync(logFilePath)) {
+  fs.writeFileSync(logFilePath, "");
+}
 
 const logger = winston.createLogger({
   level: "info",
@@ -14,7 +25,7 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({filename: "app.log"}),
+    new winston.transports.File({filename: logFilePath}),
   ],
 });
 

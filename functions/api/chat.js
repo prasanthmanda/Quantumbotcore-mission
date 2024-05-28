@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 const admin = require("firebase-admin");
 const logger = require("../utils/logger");
+
 if (admin.apps.length === 0) {
   admin.initializeApp();
 }
@@ -22,11 +22,14 @@ async function sendMessage(chatId, senderId, messageContent) {
     timestamp: admin.firestore.Timestamp.now(),
   };
 
-  // Add message to the 'messages' sub-collection
-  const messageRef = await chatRef.collection("messages").add(message);
-  // eslint-disable-next-line max-len
-  logger.info("Message added to chat", {messageId: messageRef.id, chatId, senderId});
-  return messageRef.id;
+  try {
+    const messageRef = await chatRef.collection("messages").add(message);
+    logger.info("Messageadded", {messageId: messageRef.id, chatId, senderId});
+    return messageRef.id;
+  } catch (error) {
+    logger.error("Error adding message to chat", {error: error.toString()});
+    throw new Error("Failed to send message. Please try again later.");
+  }
 }
-module.exports = {sendMessage};
 
+module.exports = {sendMessage};
