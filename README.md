@@ -7,12 +7,8 @@ QuantumChat Bot is a robust real-time communication platform designed to enhance
 - [Features](#features)
 - [Architecture](#architecture)
 - [API Endpoint](#api-endpoint)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Code Structure](#code-structure)
-- [Logging](#logging)
-- [Contributing](#contributing)
-- [License](#license)
+- [Implementation](#implementation)
+
 
 ## Features
 
@@ -33,10 +29,6 @@ The QuantumChat Bot is built using the following technologies:
 ### Send Message
 - **Endpoint**: `POST /sendMessage`
 - **Description**: Sends a message within an existing chat session.
-- **Request Body**:
-  ```json
-  {
-    "sessionId": "string",
-    "senderId": "string",
-    "messageContent": "string"
-  }
+
+##Implementation
+To implement QuantumChat Bot, clone the repository, install the necessary dependencies, set up Firebase by installing the Firebase CLI and initializing Firebase in your project, deploy the Firebase functions, and use Postman or CURL to send requests to the provided API endpoints. Specifically, you need to install Node.js and Firebase CLI, run npm install to install project dependencies, run firebase login to log in to Firebase, initialize Firebase with firebase init selecting Firestore and Functions, and finally deploy the functions using firebase deploy --only functions. You can then use tools like Postman to interact with the API, such as sending messages using the /sendMessage endpoint.
