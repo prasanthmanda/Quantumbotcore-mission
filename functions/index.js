@@ -1,0 +1,45 @@
+const functions = require("firebase-functions");
+const {sendMessage} = require("./api/chat");
+
+/**
+ * Sends a chat message.
+ * @param {functions.Request} request - The HTTP request object.
+ * @param {functions.Response} response - The HTTP response object.
+ * @returns {Promise<void>}
+ */
+// eslint-disable-next-line max-len
+exports.sendChatMessage = functions.https.onRequest(async (request, response) => {
+  if (request.method !== "POST") {
+    return response.status(405).send("Method Not Allowed");
+  }
+
+  const {chatId, senderId, messageContent} = request.body;
+
+  // Validate request body
+  if (!chatId || typeof chatId !== "string") {
+    return response.status(400).send("Invalid or missing chatId");
+  }
+
+  if (!senderId || typeof senderId !== "string") {
+    return response.status(400).send("Invalid or missing senderId");
+  }
+
+  if (!messageContent || typeof messageContent !== "string") {
+    return response.status(400).send("Invalid or missing messageContent");
+  }
+
+  try {
+    const messageId = await sendMessage(chatId, senderId, messageContent);
+    response.send({
+      success: true,
+      messageId: messageId,
+      message: "Message sent successfully!",
+    });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    response.status(500).send({
+      success: false,
+      error: error.toString(),
+    });
+  }
+});
