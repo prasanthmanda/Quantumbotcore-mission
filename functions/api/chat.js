@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 const admin = require("firebase-admin");
-
+const logger = require("../utils/logger");
 if (admin.apps.length === 0) {
   admin.initializeApp();
 }
@@ -23,7 +24,9 @@ async function sendMessage(chatId, senderId, messageContent) {
 
   // Add message to the 'messages' sub-collection
   const messageRef = await chatRef.collection("messages").add(message);
+  // eslint-disable-next-line max-len
+  logger.info("Message added to chat", {messageId: messageRef.id, chatId, senderId});
   return messageRef.id;
 }
-
 module.exports = {sendMessage};
+
